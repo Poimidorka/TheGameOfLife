@@ -63,8 +63,9 @@ class Pole(object):
         self.__epoch = epoch
 
     def display(self):
-        print("Epoch #", end="")
+        print("Epoch ", end="")
         print(self.__epoch)
+        print()
         for i in range(min(self.__c1.x, self.__c2.x), max(self.__c1.x, self.__c2.x) + 1):
             for j in range(min(self.__c1.y, self.__c2.y), max(self.__c1.y, self.__c2.y) + 1):
                 symbol = "."
@@ -86,8 +87,16 @@ def read_str():
 
 def read_int():
     try:
-        n = int(read_str())
-        return n
+        return int(read_str())
+    except ValueError:
+        print("Error of reading")
+        exit(0)
+
+
+def read_ints():
+    try:
+        x, y = map(int, read_str().split())
+        return x, y
     except ValueError:
         print("Error of reading")
         exit(0)
@@ -99,22 +108,22 @@ class Game:
 
     def __init__(self):
         print("Enter the number of living cells")
-        n = int(input())
+        n = read_int()
         print("Enter the coordinates of cells (2 integers in ", end="")
         print(n, "rows)")
         alive = set()
         for i in range(n):
-            x, y = map(int, input().split())
+            x, y = read_ints()
             alive.add(Cell(x, y))
         c1 = Cell()
         c2 = Cell()
         print("Enter the coordinates of two opposite corners of the rectangle (2 integers in 2 rows)")
-        c1.x, c1.y = map(int, input().split())
-        c2.x, c2.y = map(int, input().split())
+        c1.x, c1.y = read_ints()
+        c2.x, c2.y = read_ints()
         self.__pole = Pole(alive, c1, c2)
         self.__pole.display()
         print("Enter the number of eras you want to see")
-        self.__eras = int(input())
+        self.__eras = read_int()
 
     def play(self):
         for era in range(self.__eras):
